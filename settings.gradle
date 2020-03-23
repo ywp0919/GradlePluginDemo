@@ -1,0 +1,5 @@
+rootProject.name='GradlePluginDemo'
+include ':app'
+include ':buildSrc'
+include ':buildSrc'
+include ':exModuleScript'

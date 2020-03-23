@@ -1,0 +1,5 @@
+project.task("scriptHello"){
+    doLast({
+        println("doLast scriptHello")
+    })
+}

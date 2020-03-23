@@ -1,0 +1,30 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    // ASM 相关
+    implementation 'org.ow2.asm:asm:7.1'
+    implementation 'org.ow2.asm:asm-util:7.1'
+    implementation 'org.ow2.asm:asm-commons:7.1'
+
+//    implementation 'com.android.tools.build:gradle-api:3.6.1'
+    // mmp gradle-api和gradle不一样。
+    implementation 'com.android.tools.build:gradle:3.6.1'
+}
+
+group = 'com.wepon.plugin'
+version = '1.0.0'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
+}
