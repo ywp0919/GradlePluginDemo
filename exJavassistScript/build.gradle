@@ -1,0 +1,31 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation 'javassist:javassist:3.12.1.GA'
+    implementation 'commons-io:commons-io:2.5'
+
+//    implementation 'com.android.tools.build:gradle-api:3.6.1'
+    // mmp gradle-api和gradle不一样。
+    implementation 'com.android.tools.build:gradle:3.6.1'
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+group = 'com.wepon.plugin'
+version = '1.0.0'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
+}
