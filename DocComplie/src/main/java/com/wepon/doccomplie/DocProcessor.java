@@ -26,14 +26,14 @@ import javax.tools.StandardLocation;
  * Description:
  */
 @AutoService(Processor.class) //其中这个注解就是 auto-service 提供的SPI功能
-public class DocProcessor extends AbstractProcessor{
+public class DocProcessor extends AbstractProcessor {
 
     Writer docWriter;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
-
+        System.out.println("DocProcessor init");
     }
 
     @Override
@@ -52,8 +52,12 @@ public class DocProcessor extends AbstractProcessor{
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
+        if (annotations == null || annotations.isEmpty()) {
+            return false;
+        }
+        System.out.println("DocProcessor 开始");
         Messager messager = processingEnv.getMessager();
-        Map<String,Entity> map = new HashMap<>();
+        Map<String, Entity> map = new HashMap<>();
         StringBuilder stringBuilder = new StringBuilder();
         for (Element e : env.getElementsAnnotatedWith(GDoc.class)) {
             GDoc annotation = e.getAnnotation(GDoc.class);
@@ -61,7 +65,7 @@ public class DocProcessor extends AbstractProcessor{
             entity.name = annotation.name();
             entity.author = annotation.author();
             entity.time = annotation.time();
-            map.put(e.getSimpleName().toString(),entity);
+            map.put(e.getSimpleName().toString(), entity);
 
             stringBuilder.append(e.getSimpleName()).append("       ").append(entity.name).append("\n");
         }
@@ -74,13 +78,18 @@ public class DocProcessor extends AbstractProcessor{
             ).openWriter();
 
             //docWriter.append(JSON.toJSONString(map, SerializerFeature.PrettyFormat));
-            docWriter.append(stringBuilder.toString());
+            String str = stringBuilder.toString();
+            docWriter.append(str);
+            System.out.println("DocProcessor write string:" + str);
             docWriter.flush();
             docWriter.close();
+            System.out.println("DocProcessor docWriter close");
         } catch (IOException e) {
             //e.printStackTrace();
             //写入失败
+            System.out.println("DocProcessor 写入失败：" + e.getMessage());
         }
+        System.out.println("DocProcessor 结束");
         return true;
     }
 }
